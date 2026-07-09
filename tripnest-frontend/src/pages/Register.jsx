@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Mail, Lock, Loader2 } from 'lucide-react';
+import { User, Mail, Phone, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import useAuth from '../hooks/useAuth';
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -19,13 +22,19 @@ const Register = () => {
   const validate = () => {
     const newErrors = {};
     if (!name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = 'Full name is required';
     }
 
     if (!email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = 'Email address is required';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!phone) {
+      newErrors.phone = 'Phone number is required';
+    } else if (!/^\d{10}$/.test(phone)) {
+      newErrors.phone = 'Phone must be a valid 10-digit number';
     }
 
     if (!password) {
@@ -50,9 +59,13 @@ const Register = () => {
     const loadingToast = toast.loading('Registering your account...');
 
     try {
+      // Send required parameters to Spring Boot backend
       await register(name, email, password);
+      // Store phone in localStorage for profile details completeness
+      localStorage.setItem('user_phone', phone);
+
       toast.dismiss(loadingToast);
-      toast.success('Registration successful! Welcome to TripNest. 🌌');
+      toast.success('Registration successful! Welcome to TripNest. 🎉');
       navigate('/dashboard');
     } catch (error) {
       console.error('Registration error:', error);
@@ -81,9 +94,9 @@ const Register = () => {
         transition={{ duration: 0.3, ease: "easeOut" }}
         className="w-full max-w-md z-10 animate-scale-in"
       >
-        <div className="rounded-2xl bg-surface/80 backdrop-blur-lg shadow-glass border border-white/5 p-8">
+        <div className="rounded-premium bg-surface backdrop-blur-lg shadow-glass border border-slate-200 dark:border-slate-800/60 p-8">
           
-          <div className="text-center space-y-2 mb-8">
+          <div className="text-center space-y-2 mb-6">
             <h2 className="text-3xl font-extrabold tracking-tight text-light font-display">
               Create Account
             </h2>
@@ -96,7 +109,7 @@ const Register = () => {
             
             {/* Full Name Field */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-light" htmlFor="name">
+              <label className="text-xs font-bold text-light uppercase tracking-wider" htmlFor="name">
                 Full Name
               </label>
               <div className="relative">
@@ -107,7 +120,7 @@ const Register = () => {
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className={`w-full pl-11 pr-4 py-2.5 rounded-lg bg-surface/50 backdrop-blur-md border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.name ? 'border-danger focus:ring-danger/20' : 'border-white/10'}`}
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl bg-void border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.name ? 'border-danger focus:ring-danger/20' : 'border-slate-200 dark:border-slate-800'}`}
                   disabled={loading}
                 />
               </div>
@@ -118,7 +131,7 @@ const Register = () => {
 
             {/* Email Field */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-light" htmlFor="email">
+              <label className="text-xs font-bold text-light uppercase tracking-wider" htmlFor="email">
                 Email Address
               </label>
               <div className="relative">
@@ -129,7 +142,7 @@ const Register = () => {
                   placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`w-full pl-11 pr-4 py-2.5 rounded-lg bg-surface/50 backdrop-blur-md border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.email ? 'border-danger focus:ring-danger/20' : 'border-white/10'}`}
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl bg-void border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.email ? 'border-danger focus:ring-danger/20' : 'border-slate-200 dark:border-slate-800'}`}
                   disabled={loading}
                 />
               </div>
@@ -138,22 +151,52 @@ const Register = () => {
               )}
             </div>
 
+            {/* Phone Field */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-light uppercase tracking-wider" htmlFor="phone">
+                Phone Number
+              </label>
+              <div className="relative">
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="10-digit number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl bg-void border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.phone ? 'border-danger focus:ring-danger/20' : 'border-slate-200 dark:border-slate-800'}`}
+                  disabled={loading}
+                />
+              </div>
+              {errors.phone && (
+                <p className="text-xs font-semibold text-danger">{errors.phone}</p>
+              )}
+            </div>
+
             {/* Password Field */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-light" htmlFor="password">
+              <label className="text-xs font-bold text-light uppercase tracking-wider" htmlFor="password">
                 Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   placeholder="Minimum 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`w-full pl-11 pr-4 py-2.5 rounded-lg bg-surface/50 backdrop-blur-md border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.password ? 'border-danger focus:ring-danger/20' : 'border-white/10'}`}
+                  className={`w-full pl-11 pr-11 py-2.5 rounded-xl bg-void border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.password ? 'border-danger focus:ring-danger/20' : 'border-slate-200 dark:border-slate-800'}`}
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted hover:text-light transition-colors"
+                  tabIndex="-1"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
               {errors.password && (
                 <p className="text-xs font-semibold text-danger">{errors.password}</p>
@@ -162,7 +205,7 @@ const Register = () => {
 
             {/* Confirm Password Field */}
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-light" htmlFor="confirmPassword">
+              <label className="text-xs font-bold text-light uppercase tracking-wider" htmlFor="confirmPassword">
                 Confirm Password
               </label>
               <div className="relative">
@@ -173,7 +216,7 @@ const Register = () => {
                   placeholder="Re-enter password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className={`w-full pl-11 pr-4 py-2.5 rounded-lg bg-surface/50 backdrop-blur-md border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.confirmPassword ? 'border-danger focus:ring-danger/20' : 'border-white/10'}`}
+                  className={`w-full pl-11 pr-4 py-2.5 rounded-xl bg-void border text-light placeholder-muted focus:border-accent focus:ring-2 focus:ring-accent/30 transition-all duration-200 ${errors.confirmPassword ? 'border-danger focus:ring-danger/20' : 'border-slate-200 dark:border-slate-800'}`}
                   disabled={loading}
                 />
               </div>
@@ -191,7 +234,7 @@ const Register = () => {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  <span>Registering...</span>
+                  <span>Registering Account...</span>
                 </>
               ) : (
                 <span>Register</span>
@@ -201,7 +244,7 @@ const Register = () => {
           </form>
 
           {/* Account Footer Links */}
-          <div className="mt-8 pt-6 border-t border-white/5 text-center text-sm">
+          <div className="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 text-center text-sm">
             <p className="text-muted">
               Already have an account?{' '}
               <Link to="/login" className="font-bold text-accent hover:text-glow transition-colors hover:underline">

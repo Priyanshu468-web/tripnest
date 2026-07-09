@@ -1,36 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
-  Briefcase, 
-  Calendar, 
-  Wallet, 
-  CreditCard, 
-  TrendingUp, 
-  MapPin, 
-  Activity, 
-  Plus, 
-  ArrowRight,
-  Compass,
-  FileText
+  Briefcase, Calendar, Wallet, Heart, Compass, PlusCircle, 
+  User, CreditCard, ChevronRight, Activity, Clock, Plus
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+// Services & Hooks
 import useAuth from '../hooks/useAuth';
 import tripService from '../services/tripService';
+import bookingService from '../services/bookingService';
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [trips, setTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  const [trips, setTrips] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [wishlistCount, setWishlistCount] = useState(0);
+  const [recentDestinations, setRecentDestinations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
         setLoading(true);
-        const data = await tripService.getTrips();
-        setTrips(data);
+        // Load trips from Spring Boot
+        const tripsData = await tripService.getTrips();
+        setTrips(tripsData);
+
+        // Load bookings
+        const bookingsData = await bookingService.getBookings();
+        setBookings(bookingsData);
+
+        // Load wishlist count
+        const savedWish = localStorage.getItem('tripnest_wishlist');
+        const wishList = savedWish ? JSON.parse(savedWish) : [];
+        setWishlistCount(wishList.length);
+
+        // Load recently viewed destinations
+        const savedRecent = localStorage.getItem('tripnest_recent');
+        let recentList = savedRecent ? JSON.parse(savedRecent) : [];
+        
+        // If empty, seed some default recent ones to look beautiful
+        if (recentList.length === 0) {
+          recentList = [
+            { id: 1, name: "Srinagar", country: "India", imageUrl: "https://images.unsplash.com/photo-1598091383021-15ddea10925d?q=80&w=300&auto=format&fit=crop", rating: 4.9 },
+            { id: 3, name: "Munnar", country: "India", imageUrl: "https://images.unsplash.com/photo-1593693397690-362cb9666fc2?q=80&w=300&auto=format&fit=crop", rating: 4.8 }
+          ];
+          localStorage.setItem('tripnest_recent', JSON.stringify(recentList));
+        }
+        setRecentDestinations(recentList);
+
       } catch (err) {
-        console.error('Failed to load dashboard trips', err);
+        console.error('Failed to load dashboard statistics', err);
       } finally {
         setLoading(false);
       }
@@ -38,84 +61,97 @@ const Dashboard = () => {
     loadDashboardData();
   }, []);
 
-  // Calculate dynamic stats
-  const totalTrips = trips.length;
-  
   const today = new Date();
-  const upcomingTrips = trips.filter(t => new Date(t.startDate) > today).length;
-
+  
+  // Stats derivations
+  const upcomingTrips = trips.filter(t => new Date(t.startDate) > today);
   const totalBudget = trips.reduce((acc, t) => acc + (t.budget || 0), 0);
 
-  // Quick stats metadata
   const stats = [
-    { title: 'Total Trips', value: totalTrips, detail: 'Planned & Completed', icon: Briefcase, color: 'text-accent bg-accent/10 shadow-[0_0_15px_rgba(99,102,241,0.1)]' },
-    { title: 'Upcoming Trips', value: upcomingTrips, detail: 'Future departures', icon: Calendar, color: 'text-glow bg-glow/10 shadow-[0_0_15px_rgba(167,139,250,0.1)]' },
-    { title: 'Travel Budget', value: `$${totalBudget.toLocaleString()}`, detail: 'Total Allocation', icon: Wallet, color: 'text-indigo-400 bg-indigo-500/10' },
-    { title: 'System Status', value: 'Live', detail: 'Weightless floating sync', icon: CreditCard, color: 'text-emerald-400 bg-emerald-500/10' },
+    { 
+      title: 'Total Bookings', 
+      value: bookings.length, 
+      detail: 'Reservations active', 
+      icon: Briefcase, 
+      color: 'text-accent bg-accent/10 border-accent/20' 
+    },
+    { 
+      title: 'Wishlist Items', 
+      value: wishlistCount, 
+      detail: 'Saved destinations', 
+      icon: Heart, 
+      color: 'text-rose-500 bg-rose-500/10 border-rose-500/20' 
+    },
+    { 
+      title: 'Upcoming Trips', 
+      value: upcomingTrips.length, 
+      detail: 'Future departures', 
+      icon: Calendar, 
+      color: 'text-glow bg-glow/10 border-glow/20' 
+    },
+    { 
+      title: 'Expense Budget', 
+      value: `₹${totalBudget.toLocaleString()}`, 
+      detail: 'Allocated in plans', 
+      icon: Wallet, 
+      color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20' 
+    },
   ];
 
-  const recentActivities = [
-    { id: 1, action: 'Synchronized Swiss Alps travel timeline', time: 'Just now', category: 'Itinerary' },
-    { id: 2, action: 'Seeded recommended travel spots feed', time: 'Recently', category: 'Destinations' },
-    { id: 3, action: 'Connected to local Spring Boot API', time: 'Active', category: 'System' }
-  ];
-
-  const popularDestinations = [
-    { name: 'Kyoto, Japan', image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=300&auto=format&fit=crop', rating: '4.9' },
-    { name: 'Reykjavik, Iceland', image: 'https://images.unsplash.com/photo-1504829857797-ddff28127792?q=80&w=300&auto=format&fit=crop', rating: '4.8' }
+  const quickActions = [
+    { title: 'Plan New Trip', desc: 'Create custom itinerary', link: '/dashboard/create-trip', icon: PlusCircle, color: 'from-blue-600 to-indigo-600' },
+    { title: 'Explore Destinations', desc: 'Browse available spots', link: '/dashboard/destinations', icon: Compass, color: 'from-cyan-500 to-teal-500' },
+    { title: 'Manage Budgets', desc: 'Check expenses & split bills', link: '/dashboard/budget', icon: Wallet, color: 'from-emerald-500 to-green-500' },
+    { title: 'Edit User Profile', desc: 'Set avatars & settings', link: '/dashboard/profile', icon: User, color: 'from-amber-500 to-orange-500' }
   ];
 
   if (loading) {
     return (
       <div className="space-y-6 animate-pulse">
-        {/* Header Skeleton */}
-        <div className="h-28 bg-surface/50 border border-white/5 rounded-2xl" />
-        {/* Stats Grid Skeleton */}
+        <div className="h-28 bg-surface/50 border border-slate-200 dark:border-slate-800 rounded-2xl" />
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-32 bg-surface/50 border border-white/5 rounded-2xl" />
+            <div key={i} className="h-32 bg-surface/50 border border-slate-200 dark:border-slate-800 rounded-2xl" />
           ))}
         </div>
-        {/* Content Skeleton */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 h-96 bg-surface/50 border border-white/5 rounded-2xl" />
-          <div className="h-96 bg-surface/50 border border-white/5 rounded-2xl" />
+          <div className="lg:col-span-2 h-96 bg-surface/50 border border-slate-200 dark:border-slate-800 rounded-2xl" />
+          <div className="h-96 bg-surface/50 border border-slate-200 dark:border-slate-800 rounded-2xl" />
         </div>
       </div>
     );
   }
 
-  // Get the most upcoming/recent trip to showcase in banner
-  const activeTrip = trips.length > 0 ? trips[0] : null;
+  const userDisplayName = user?.name || 'Traveler';
 
   return (
     <div className="space-y-6 animate-scale-in">
       
-      {/* Welcome Banner */}
+      {/* Welcome Header */}
       <motion.div 
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         className="p-6 sm:p-8 bg-gradient-to-r from-accent to-glow rounded-2xl text-white shadow-glass-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6"
       >
         <div className="space-y-1.5">
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight font-display">
-            Welcome Back, {user?.name || 'Traveler'}! 👋
+          <h1 className="text-2xl sm:text-4xl font-black font-display tracking-tight leading-tight">
+            Welcome Back, {userDisplayName}!
           </h1>
-          <p className="text-white/80 text-sm max-w-md">
-            Ready to plan your next escape? Experience travel mapping without gravity.
+          <p className="text-xs sm:text-sm text-white/80 max-w-xl">
+            Check your upcoming flight tickets, track currency splits, and organize your digital travel binder.
           </p>
         </div>
-        <button 
+        <button
           onClick={() => navigate('/dashboard/create-trip')}
-          className="flex items-center gap-2 px-5 py-3 bg-white text-accent hover:text-glow font-bold rounded-xl shadow-md hover:scale-[1.02] active:scale-95 transition-all text-sm duration-200"
+          className="px-5 py-2.5 bg-white text-accent font-bold text-xs rounded-xl shadow-md hover:bg-slate-50 transition-all flex items-center gap-1.5 active:scale-95"
         >
           <Plus className="w-4 h-4" />
-          <span>Plan New Trip</span>
+          <span>New Trip Plan</span>
         </button>
       </motion.div>
 
-      {/* Grid Stats */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Statistics Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, idx) => {
           const Icon = stat.icon;
           return (
@@ -124,190 +160,123 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="rounded-2xl bg-surface/80 backdrop-blur-lg border border-white/5 shadow-glass hover:shadow-glass-lg hover:scale-105 hover:-translate-y-1 transition-all duration-200 p-6"
+              className="glass-card border-slate-200 dark:border-slate-800 p-5 flex items-center justify-between shadow-glass"
             >
-              <div className="flex justify-between items-start">
-                <div className="space-y-3">
-                  <span className="text-xs uppercase font-bold tracking-wider text-muted">{stat.title}</span>
-                  <h3 className="text-3xl font-extrabold text-light font-display">{stat.value}</h3>
-                  <p className="text-xs text-muted">{stat.detail}</p>
-                </div>
-                <div className={`p-3 rounded-xl ${stat.color}`}>
-                  <Icon className="w-6 h-6" />
-                </div>
+              <div className="space-y-1.5">
+                <span className="text-[10px] text-muted block uppercase font-bold tracking-wider">{stat.title}</span>
+                <h3 className="text-2xl font-black font-mono text-light">{stat.value}</h3>
+                <span className="text-[10px] text-muted block font-semibold">{stat.detail}</span>
+              </div>
+              <div className={`p-3.5 rounded-xl border ${stat.color}`}>
+                <Icon className="w-5 h-5" />
               </div>
             </motion.div>
           );
         })}
-      </section>
+      </div>
 
-      {/* Main Core Layout Grid */}
+      {/* Quick Actions Panel */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-extrabold text-light uppercase tracking-wider font-display">Quick Actions</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {quickActions.map((act) => {
+            const Icon = act.icon;
+            return (
+              <Link
+                key={act.title}
+                to={act.link}
+                className="p-4 glass-card border-slate-200 dark:border-slate-800 hover:border-accent/20 flex gap-4 items-center shadow-glass transition-all"
+              >
+                <div className={`p-3 bg-gradient-to-tr ${act.color} text-white rounded-xl`}>
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-xs text-light leading-snug">{act.title}</h4>
+                  <p className="text-[10px] text-muted mt-0.5">{act.desc}</p>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Lower Details Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Left Column: Progress, Destinations & Quick actions */}
-        <section className="lg:col-span-8 space-y-6">
-          
-          {/* Quick Actions Shortcuts */}
-          <div className="rounded-2xl bg-surface/80 backdrop-blur-lg border border-white/5 shadow-glass p-6">
-            <h3 className="font-bold text-light mb-4 flex items-center gap-2 font-display">
-              <Activity className="w-5 h-5 text-accent" />
-              <span>Quick Shortcuts</span>
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <button 
-                onClick={() => navigate('/dashboard/create-trip')}
-                className="p-4 bg-void/50 hover:bg-accent/10 hover:text-accent rounded-2xl transition-all border border-white/5 text-center space-y-2 group duration-200 hover:scale-105"
-              >
-                <Briefcase className="w-6 h-6 mx-auto text-accent" />
-                <span className="block text-xs font-semibold">New Trip</span>
-              </button>
-              <button 
-                onClick={() => {
-                  if (activeTrip) {
-                    navigate('/dashboard/expenses', { state: { tripId: activeTrip.id } });
-                  } else {
-                    navigate('/dashboard/trips');
-                  }
-                }}
-                className="p-4 bg-void/50 hover:bg-accent/10 hover:text-accent rounded-2xl transition-all border border-white/5 text-center space-y-2 group duration-200 hover:scale-105"
-              >
-                <CreditCard className="w-6 h-6 mx-auto text-glow" />
-                <span className="block text-xs font-semibold">Log Cost</span>
-              </button>
-              <button 
-                onClick={() => navigate('/dashboard/documents')}
-                className="p-4 bg-void/50 hover:bg-accent/10 hover:text-accent rounded-2xl transition-all border border-white/5 text-center space-y-2 group duration-200 hover:scale-105"
-              >
-                <FileText className="w-6 h-6 mx-auto text-indigo-400" />
-                <span className="block text-xs font-semibold">Upload PDF</span>
-              </button>
-              <button 
-                onClick={() => navigate('/dashboard/destinations')}
-                className="p-4 bg-void/50 hover:bg-accent/10 hover:text-accent rounded-2xl transition-all border border-white/5 text-center space-y-2 group duration-200 hover:scale-105"
-              >
-                <Compass className="w-6 h-6 mx-auto text-emerald-400" />
-                <span className="block text-xs font-semibold">Explore Spot</span>
-              </button>
-            </div>
+        {/* Upcoming Trips List */}
+        <div className="lg:col-span-8 glass-card border-slate-200 dark:border-slate-800 space-y-4 shadow-glass">
+          <div className="flex justify-between items-center pb-2 border-b border-slate-200 dark:border-slate-800">
+            <h3 className="font-extrabold text-sm text-light uppercase tracking-wider font-display">Upcoming Trips</h3>
+            <Link to="/dashboard/trips" className="text-xs text-accent font-bold hover:underline flex items-center gap-0.5">
+              <span>View all</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
-          {/* Travel Progress Card */}
-          <div className="rounded-2xl bg-surface/80 backdrop-blur-lg border border-white/5 shadow-glass p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="font-bold text-light flex items-center gap-2 font-display">
-                <TrendingUp className="w-5 h-5 text-accent" />
-                <span>Next Trip Details</span>
-              </h3>
-              <button 
-                onClick={() => navigate('/dashboard/trips')}
-                className="text-xs font-bold text-accent flex items-center gap-1 hover:underline"
+          {upcomingTrips.length === 0 ? (
+            <div className="text-center py-12 space-y-4">
+              <Clock className="w-10 h-10 text-muted mx-auto animate-pulse" />
+              <div className="space-y-1">
+                <p className="text-xs text-light font-bold">No upcoming trips scheduled</p>
+                <p className="text-[10px] text-muted">Plan your next adventure to Munnar or Ladakh today!</p>
+              </div>
+              <button
+                onClick={() => navigate('/dashboard/create-trip')}
+                className="px-4 py-2 bg-accent/10 border border-accent/20 text-accent font-bold text-xs rounded-xl hover:bg-accent/20 transition-all"
               >
-                <span>View All Trips</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                Create Trip
               </button>
             </div>
-            
-            {activeTrip ? (
-              <div className="p-4 bg-void/30 rounded-2xl border border-white/5 space-y-4">
-                <div className="flex justify-between items-start">
+          ) : (
+            <div className="space-y-3">
+              {upcomingTrips.slice(0, 3).map((trip) => (
+                <div 
+                  key={trip.id} 
+                  className="p-4 bg-void border border-slate-200 dark:border-slate-800 hover:border-accent/10 rounded-xl flex flex-col sm:flex-row justify-between sm:items-center gap-4 transition-all"
+                >
                   <div className="space-y-1">
-                    <h4 className="font-bold text-base text-light">{activeTrip.destination} 🌍</h4>
-                    <p className="text-xs text-muted">
-                      {new Date(activeTrip.startDate).toLocaleDateString()} - {new Date(activeTrip.endDate).toLocaleDateString()}
+                    <h4 className="font-extrabold text-xs text-light tracking-wide">{trip.destination}</h4>
+                    <p className="text-[10px] text-muted flex items-center gap-1.5">
+                      <span>{trip.startDate} to {trip.endDate}</span>
+                      <span className="w-1 h-1 rounded-full bg-slate-400" />
+                      <span>Budget: ₹{trip.budget?.toLocaleString()}</span>
                     </p>
                   </div>
-                  <span className="badge-glow-warning">{activeTrip.status}</span>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4 pt-2 border-t border-white/5 text-xs">
-                  <div>
-                    <span className="text-muted">Budget Limit</span>
-                    <p className="font-bold text-light mt-0.5">${activeTrip.budget?.toLocaleString() || '0'}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted">Co-travelers</span>
-                    <p className="font-bold text-light mt-0.5">{activeTrip.members?.length || 1} Members</p>
-                  </div>
-                  <div>
-                    <span className="text-muted">Visibility</span>
-                    <p className="font-bold text-light mt-0.5">{activeTrip.isPublic ? 'Public Link' : 'Collaborators'}</p>
-                  </div>
-                </div>
-
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => navigate('/dashboard/itinerary', { state: { tripId: activeTrip.id } })}
-                    className="btn-glow-primary text-xs w-full py-2.5"
-                  >
-                    Manage Daily Timeline
-                  </button>
-                  <button 
-                    onClick={() => navigate('/dashboard/budget', { state: { tripId: activeTrip.id } })}
-                    className="btn-glow-secondary text-xs w-full py-2.5"
-                  >
-                    View Expenses & Settlements
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center p-8 bg-void/30 rounded-2xl border border-white/5 space-y-4">
-                <p className="text-sm text-muted">You do not have any active or upcoming trips planned.</p>
-                <button 
-                  onClick={() => navigate('/dashboard/create-trip')}
-                  className="btn-glow-primary text-xs"
-                >
-                  Create Your First Trip Now
-                </button>
-              </div>
-            )}
-          </div>
-        </section>
-        
-        {/* Right Column: Activities, popular spots */}
-        <section className="lg:col-span-4 space-y-6">
-          
-          {/* Recent Activity Log */}
-          <div className="rounded-2xl bg-surface/80 backdrop-blur-lg border border-white/5 shadow-glass p-6">
-            <h3 className="font-bold text-light mb-4 flex items-center gap-2 font-display">
-              <Activity className="w-5 h-5 text-accent" />
-              <span>Recent Activity</span>
-            </h3>
-            <div className="space-y-4">
-              {recentActivities.map((act) => (
-                <div key={act.id} className="flex gap-3 text-xs leading-normal">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
-                  <div className="space-y-0.5">
-                    <p className="text-light font-semibold">{act.action}</p>
-                    <span className="text-[10px] text-muted block">{act.time}</span>
-                  </div>
+                  <span className="px-2.5 py-1 bg-accent/10 border border-accent/20 text-accent text-[10px] font-extrabold rounded-lg w-fit">
+                    {trip.status}
+                  </span>
                 </div>
               ))}
             </div>
+          )}
+        </div>
+
+        {/* Recently Viewed Destinations */}
+        <div className="lg:col-span-4 glass-card border-slate-200 dark:border-slate-800 space-y-4 shadow-glass">
+          <div className="pb-2 border-b border-slate-200 dark:border-slate-800">
+            <h3 className="font-extrabold text-sm text-light uppercase tracking-wider font-display">Recently Viewed</h3>
           </div>
 
-          {/* Popular spots suggestions */}
-          <div className="rounded-2xl bg-surface/80 backdrop-blur-lg border border-white/5 shadow-glass p-6">
-            <h3 className="font-bold text-light mb-4 flex items-center gap-2 font-display">
-              <Compass className="w-5 h-5 text-accent" />
-              <span>Popular Spots</span>
-            </h3>
-            <div className="space-y-4">
-              {popularDestinations.map((dest) => (
-                <div key={dest.name} className="flex items-center gap-3.5 group cursor-pointer" onClick={() => navigate('/dashboard/destinations')}>
-                  <div className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 border border-white/5">
-                    <img src={dest.image} alt={dest.name} className="w-full h-full object-cover group-hover:scale-110 transition-all duration-300" />
-                  </div>
-                  <div className="flex-1 overflow-hidden">
-                    <h4 className="font-bold text-xs truncate text-light group-hover:text-accent transition-colors">{dest.name}</h4>
-                    <span className="text-[10px] text-muted">Rating ★ {dest.rating}</span>
-                  </div>
-                  <MapPin className="w-4 h-4 text-muted group-hover:text-accent transition-colors" />
+          <div className="space-y-4">
+            {recentDestinations.slice(0, 3).map((dest) => (
+              <div 
+                key={dest.id}
+                onClick={() => navigate(`/destinations/${dest.id}`)}
+                className="flex gap-3 items-center cursor-pointer group"
+              >
+                <div className="w-14 h-11 rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex-shrink-0">
+                  <img src={dest.imageUrl} alt={dest.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                 </div>
-              ))}
-            </div>
+                <div className="overflow-hidden">
+                  <h4 className="font-bold text-xs text-light truncate group-hover:text-accent transition-colors font-display">
+                    {dest.name}
+                  </h4>
+                  <span className="text-[9px] text-muted block mt-0.5">{dest.country || 'India'}</span>
+                </div>
+              </div>
+            ))}
           </div>
-
-        </section>
+        </div>
 
       </div>
 

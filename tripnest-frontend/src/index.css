@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 @import './styles/animations.css';
 @import './styles/glass.css';
 
@@ -5,78 +6,104 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --color-void: #F8FAFC;
+  --color-surface: rgba(255, 255, 255, 0.75);
+  --color-hover: rgba(241, 245, 249, 0.9);
+  --color-accent: #2563EB;
+  --color-glow: #06B6D4;
+  --color-warning: #F59E0B;
+  --color-light: #1E293B;
+  --color-muted: #64748B;
+  --color-border: rgba(226, 232, 240, 0.8);
+  --color-shadow: rgba(37, 99, 235, 0.05);
+  --color-shadow-lg: rgba(37, 99, 235, 0.08);
+}
+
+.dark {
+  --color-void: #0B0F19;
+  --color-surface: rgba(17, 24, 39, 0.7);
+  --color-hover: rgba(31, 41, 55, 0.8);
+  --color-accent: #3B82F6;
+  --color-glow: #06B6D4;
+  --color-warning: #F59E0B;
+  --color-light: #F1F5F9;
+  --color-muted: #94A3B8;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-shadow: rgba(0, 0, 0, 0.25);
+  --color-shadow-lg: rgba(0, 0, 0, 0.35);
+}
+
 @layer base {
   body {
-    @apply bg-void text-light font-sans antialiased;
-    background-color: #0D1117;
+    @apply bg-void text-light font-sans antialiased transition-colors duration-300;
   }
 }
 
 @layer components {
-  /* Custom scrollbar matching Ethereal dark void theme */
+  /* Premium scrollbar */
   ::-webkit-scrollbar {
     @apply w-2 h-2;
   }
   ::-webkit-scrollbar-track {
-    background: #0D1117;
+    background: var(--color-void);
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.2);
+    background: rgba(37, 99, 235, 0.15);
     border-radius: 9999px;
-    border: 2px solid #0D1117;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.15);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(167, 139, 250, 0.4);
+    background: rgba(37, 99, 235, 0.3);
   }
 
-  /* Core floating component presets */
+  /* Glassmorphism Presets */
   .glass-card {
-    @apply rounded-xl p-6 transition-all duration-300;
-    background: rgba(28, 33, 40, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08);
+    @apply rounded-premium p-6 transition-all duration-300 border backdrop-blur-md;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    box-shadow: 0 8px 32px var(--color-shadow);
   }
 
   .glass-card:hover {
-    @apply scale-[1.02] -translate-y-1;
-    box-shadow: 0 16px 48px rgba(99, 102, 241, 0.12), 0 0 20px rgba(167, 139, 250, 0.15);
-    border-color: rgba(167, 139, 250, 0.2);
+    @apply scale-[1.01] -translate-y-0.5;
+    box-shadow: 0 16px 48px var(--color-shadow-lg);
+    border-color: rgba(37, 99, 235, 0.2);
   }
 
   /* Floating Glow Buttons */
   .btn-glow-primary {
-    @apply px-5 py-2.5 rounded-lg text-white font-semibold transition-all duration-200 active:scale-95;
-    background: #6366F1;
-    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    @apply px-5 py-2.5 rounded-xl text-white font-semibold transition-all duration-200 active:scale-95 bg-gradient-to-r from-accent to-glow shadow-md hover:shadow-glow;
   }
   
   .btn-glow-primary:hover {
-    @apply -translate-y-0.5 scale-105;
-    background: #787af6;
-    box-shadow: 0 0 20px rgba(167, 139, 250, 0.5), 0 6px 20px rgba(99, 102, 241, 0.6);
+    @apply -translate-y-0.5 scale-[1.02] brightness-105;
   }
 
   .btn-glow-secondary {
-    @apply px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 active:scale-95 border border-white/10 text-light bg-surface/50 backdrop-blur-md;
+    @apply px-5 py-2.5 rounded-xl font-semibold transition-all duration-200 active:scale-95 border text-light backdrop-blur-md;
+    background: rgba(var(--color-surface), 0.4);
+    border-color: var(--color-border);
   }
 
   .btn-glow-secondary:hover {
-    @apply -translate-y-0.5 scale-105 bg-surface/80 border-white/20;
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+    @apply -translate-y-0.5 scale-[1.02];
+    background: var(--color-hover);
+    box-shadow: 0 4px 12px var(--color-shadow);
   }
 
   /* Status badges */
   .badge-glow-success {
-    @apply px-3 py-1 bg-emerald-500/10 text-emerald-400 text-xs font-semibold rounded-full border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)];
+    @apply px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold rounded-full border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)];
   }
 
   .badge-glow-warning {
-    @apply px-3 py-1 bg-amber-500/10 text-amber-400 text-xs font-semibold rounded-full border border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.1)];
+    @apply px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold rounded-full border border-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.1)];
   }
 
   .badge-glow-danger {
-    @apply px-3 py-1 bg-red-500/10 text-red-400 text-xs font-semibold rounded-full border border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.1)];
+    @apply px-3 py-1 bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold rounded-full border border-red-500/20 shadow-[0_0_10px_rgba(239,68,68,0.1)];
   }
 }

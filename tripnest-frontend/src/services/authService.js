@@ -16,6 +16,16 @@ export const authService = {
     return response.data;
   },
 
+  getProfile: async () => {
+    const response = await api.get('/api/user/profile');
+    return response.data;
+  },
+
+  updateProfile: async (name, avatarUrl) => {
+    const response = await api.patch('/api/user/profile', { name, avatarUrl });
+    return response.data;
+  },
+
   logout: async () => {
     const response = await api.post('/api/auth/logout');
     return response.data;

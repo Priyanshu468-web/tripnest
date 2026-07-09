@@ -3,16 +3,23 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('dark'); // Force dark mode as hero
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    return saved ? saved : 'light'; // Default to light mode as requested by main background color
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.add('dark'); // Ensure dark mode class is always on
-  }, []);
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const toggleTheme = () => {
-    // Keep it dark mode for hero, but let's toggle states if wanted.
-    // For Anti-Gravity, dark void is primary, so we keep dark mode.
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
   };
 
   return (

@@ -15,6 +15,8 @@ import Trips from './pages/Trips';
 import CreateTrip from './pages/CreateTrip';
 import Itinerary from './pages/Itinerary';
 import Destinations from './pages/Destinations';
+import DestinationDetails from './pages/DestinationDetails';
+import Booking from './pages/Booking';
 import Budget from './pages/Budget';
 import Expenses from './pages/Expenses';
 import Documents from './pages/Documents';
@@ -77,6 +79,28 @@ function App() {
                 <Navbar />
                 <Home />
               </>
+            } 
+          />
+
+          <Route 
+            path="/destinations/:id" 
+            element={
+              <>
+                <Navbar />
+                <DestinationDetails />
+              </>
+            } 
+          />
+          
+          <Route 
+            path="/booking/:id" 
+            element={
+              <ProtectedRoute>
+                <>
+                  <Navbar />
+                  <Booking />
+                </>
+              </ProtectedRoute>
             } 
           />
           
