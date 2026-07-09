@@ -5,7 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173, // standard Vite port matching checklist
+    port: 5173, 
+    host: true,            // Exposes Vite on all network interfaces (LAN + external)
+    allowedHosts: true,    // Disables Host-header checking to allow tunnels like loca.lt
     proxy: {
       '/api': {
         target: 'http://localhost:8080',
