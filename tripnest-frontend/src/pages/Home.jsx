@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Star, Coffee, Shield, Award, Compass, Search, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const navigate = useNavigate();
