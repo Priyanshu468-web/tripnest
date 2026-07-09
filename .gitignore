@@ -1,0 +1,35 @@
+# Project-wide gitignore
+
+# Maven / Java
+tripnest-backend/target/
+tripnest-backend/*.db
+tripnest-backend/*.log
+tripnest-backend/.idea/
+tripnest-backend/*.iml
+tripnest-backend/.classpath
+tripnest-backend/.project
+tripnest-backend/.settings/
+tripnest-backend/bin/
+
+# Frontend / Node
+tripnest-frontend/node_modules/
+tripnest-frontend/dist/
+tripnest-frontend/.env
+tripnest-frontend/.env.local
+tripnest-frontend/.env.development.local
+tripnest-frontend/.env.test.local
+tripnest-frontend/.env.production.local
+tripnest-frontend/.idea/
+tripnest-frontend/*.suo
+tripnest-frontend/*.ntvsca*
+tripnest-frontend/*.njsproj
+tripnest-frontend/*.sln
+tripnest-frontend/*.sw?
+
+# OS / Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.settings/
+.classpath
+.project

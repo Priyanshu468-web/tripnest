@@ -1,0 +1,57 @@
+/* Entrance Animation */
+@keyframes scaleIn {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(10px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+.animate-scale-in { 
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; 
+}
+
+/* Floating Object Animation */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
+}
+
+.animate-float { 
+  animation: float 3s ease-in-out infinite; 
+}
+
+/* Slow Spin for Brand Icons */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 15s linear infinite;
+}
+
+/* Glowing Pulsing Effect on Hover */
+@keyframes glowPulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(167, 139, 250, 0.3); 
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(167, 139, 250, 0.6); 
+  }
+}
+
+.hover-glow-pulse:hover { 
+  animation: glowPulse 2s ease-in-out infinite; 
+}
