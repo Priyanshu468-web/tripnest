@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: tripnest-db
+    restart: always
+    environment:
+      POSTGRES_DB: tripnest
+      POSTGRES_USER: tripnest_user
+      POSTGRES_PASSWORD: tripnest_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: tripnest-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/tripnest
+      SPRING_DATASOURCE_USERNAME: tripnest_user
+      SPRING_DATASOURCE_PASSWORD: tripnest_password
+      JWT_SECRET: eW91ci1zdXBlci1zZWNyZXQtand0LWtleS1mb3ItdHJpcG5lc3QtYXBwbGljYXRpb24tMjAyNg==
+      JWT_EXPIRATION: 86400000
+    depends_on:
+      - postgres
+    volumes:
+      - ./uploads:/app/uploads
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: tripnest-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

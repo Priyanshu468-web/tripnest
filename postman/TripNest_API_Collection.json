@@ -1,0 +1,241 @@
+{
+  "info": {
+    "_postman_id": "c1f7b889-9a8b-4c22-b5e1-88f5f1234567",
+    "name": "TripNest API Collection",
+    "description": "Complete REST API collection for TripNest Travel Planning & Trip Management Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alex Traveler\",\n  \"email\": \"traveler@tripnest.com\",\n  \"password\": \"traveler123\",\n  \"role\": \"TRAVELER\",\n  \"phone\": \"+1 555-0123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"traveler@tripnest.com\",\n  \"password\": \"traveler123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Destinations",
+      "item": [
+        {
+          "name": "Get All Destinations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/destinations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "destinations"]
+            }
+          }
+        },
+        {
+          "name": "Search Destinations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/destinations/search?query=Tokyo",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "destinations", "search"],
+              "query": [{ "key": "query", "value": "Tokyo" }]
+            }
+          }
+        },
+        {
+          "name": "Get Destination Weather",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/destinations/Tokyo/weather",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "destinations", "Tokyo", "weather"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Trips",
+      "item": [
+        {
+          "name": "Create Trip",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Spring Break in Tokyo\",\n  \"destination\": \"Tokyo\",\n  \"startDate\": \"2026-09-01\",\n  \"endDate\": \"2026-09-10\",\n  \"travelers\": 2,\n  \"budget\": 3000.0,\n  \"description\": \"Exploring Shibuya, temples, and culinary hotspots.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trips",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips"]
+            }
+          }
+        },
+        {
+          "name": "Get My Trips",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trips/my-trips",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trips", "my-trips"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Itineraries & Activities",
+      "item": [
+        {
+          "name": "Get Itineraries by Trip ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/itineraries/trip/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "itineraries", "trip", "1"]
+            }
+          }
+        },
+        {
+          "name": "Add Activity to Trip",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dayNumber\": 1,\n  \"title\": \"Visit Senso-ji Temple\",\n  \"activityType\": \"SIGHTSEEING\",\n  \"startTime\": \"09:00\",\n  \"endTime\": \"11:30\",\n  \"location\": \"Asakusa, Tokyo\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/activities/trip/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "activities", "trip", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Budgets & Expenses",
+      "item": [
+        {
+          "name": "Get Expense Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/expenses/trip/1/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "expenses", "trip", "1", "summary"]
+            }
+          }
+        },
+        {
+          "name": "Add Expense",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 145.50,\n  \"category\": \"FOOD\",\n  \"description\": \"Ramen & Sushi Dinner\",\n  \"paidBy\": \"Alex Traveler\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/expenses/trip/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "expenses", "trip", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Dashboard",
+      "item": [
+        {
+          "name": "Get Admin Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "dashboard"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "token", "value": "YOUR_JWT_TOKEN_HERE" }
+  ]
+}

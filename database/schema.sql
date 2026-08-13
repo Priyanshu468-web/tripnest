@@ -1,0 +1,136 @@
+-- TripNest Production PostgreSQL Database Schema Initialization
+
+CREATE TABLE IF NOT EXISTS users (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL DEFAULT 'TRAVELER',
+    phone VARCHAR(50),
+    bio TEXT,
+    avatar_url VARCHAR(500),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS trips (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    travelers INT NOT NULL DEFAULT 1,
+    budget NUMERIC(12, 2) NOT NULL DEFAULT 0.0,
+    description TEXT,
+    status VARCHAR(50) NOT NULL DEFAULT 'PLANNING',
+    owner_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS itineraries (
+    id BIGSERIAL PRIMARY KEY,
+    trip_id BIGINT NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    day_number INT NOT NULL,
+    date DATE,
+    title VARCHAR(255) NOT NULL,
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS activities (
+    id BIGSERIAL PRIMARY KEY,
+    trip_id BIGINT NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    itinerary_id BIGINT REFERENCES itineraries(id) ON DELETE CASCADE,
+    day_number INT NOT NULL DEFAULT 1,
+    title VARCHAR(255) NOT NULL,
+    activity_type VARCHAR(50) NOT NULL DEFAULT 'SIGHTSEEING',
+    start_time VARCHAR(20),
+    end_time VARCHAR(20),
+    location VARCHAR(255),
+    cost NUMERIC(12, 2) DEFAULT 0.0,
+    notes TEXT,
+    completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS budgets (
+    id BIGSERIAL PRIMARY KEY,
+    trip_id BIGINT UNIQUE NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    total_budget NUMERIC(12, 2) NOT NULL DEFAULT 0.0,
+    total_expenses NUMERIC(12, 2) NOT NULL DEFAULT 0.0,
+    remaining_budget NUMERIC(12, 2) NOT NULL DEFAULT 0.0,
+    budget_utilization NUMERIC(5, 2) DEFAULT 0.0,
+    transportation_budget NUMERIC(12, 2) DEFAULT 0.0,
+    hotel_budget NUMERIC(12, 2) DEFAULT 0.0,
+    food_budget NUMERIC(12, 2) DEFAULT 0.0,
+    shopping_budget NUMERIC(12, 2) DEFAULT 0.0,
+    entertainment_budget NUMERIC(12, 2) DEFAULT 0.0,
+    misc_budget NUMERIC(12, 2) DEFAULT 0.0,
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS expenses (
+    id BIGSERIAL PRIMARY KEY,
+    trip_id BIGINT NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    title VARCHAR(255),
+    amount NUMERIC(12, 2) NOT NULL,
+    category VARCHAR(50) NOT NULL DEFAULT 'MISCELLANEOUS',
+    description TEXT,
+    expense_date DATE NOT NULL,
+    paid_by VARCHAR(255) NOT NULL,
+    receipt_url VARCHAR(500),
+    members_sharing TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS trip_members (
+    id BIGSERIAL PRIMARY KEY,
+    trip_id BIGINT NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+    user_email VARCHAR(255) NOT NULL,
+    user_name VARCHAR(255),
+    role VARCHAR(50) NOT NULL DEFAULT 'MEMBER',
+    status VARCHAR(50) NOT NULL DEFAULT 'PENDING',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT unique_trip_user UNIQUE(trip_id, user_email)
+);
+
+CREATE TABLE IF NOT EXISTS documents (
+    id BIGSERIAL PRIMARY KEY,
+    trip_id BIGINT NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+    uploader_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    file_name VARCHAR(255) NOT NULL,
+    original_file_name VARCHAR(255) NOT NULL,
+    file_type VARCHAR(100) NOT NULL,
+    file_size BIGINT NOT NULL,
+    category VARCHAR(50) NOT NULL DEFAULT 'OTHER',
+    file_path VARCHAR(500) NOT NULL,
+    download_url VARCHAR(500) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS notifications (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255),
+    message TEXT NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    is_read BOOLEAN DEFAULT FALSE,
+    link_url VARCHAR(500),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS destinations (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    country VARCHAR(255) NOT NULL,
+    description TEXT,
+    attractions TEXT,
+    best_time_to_visit VARCHAR(255),
+    popular_locations TEXT,
+    image_url VARCHAR(500),
+    rating NUMERIC(3, 2) DEFAULT 4.8,
+    popular BOOLEAN DEFAULT FALSE
+);

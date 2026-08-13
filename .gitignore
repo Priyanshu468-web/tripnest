@@ -1,0 +1,19 @@
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/build/
+*.log
+
+# Java / Maven / Backend
+backend/target/
+backend/.mvn/
+backend/*.jar
+backend/*.war
+
+# IDE / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
