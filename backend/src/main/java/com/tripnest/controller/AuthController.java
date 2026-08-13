@@ -1,6 +1,13 @@
 package com.tripnest.controller;
 
+<<<<<<< HEAD
 import com.tripnest.dto.*;
+=======
+import com.tripnest.dto.AuthRequest;
+import com.tripnest.dto.AuthResponse;
+import com.tripnest.dto.RegisterRequest;
+import com.tripnest.dto.UserProfileDto;
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 import com.tripnest.service.AuthService;
 import com.tripnest.service.UserService;
 import jakarta.validation.Valid;
@@ -8,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.util.Map;
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -36,6 +46,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+<<<<<<< HEAD
     @PostMapping("/google")
     public ResponseEntity<AuthResponse> googleLogin(@RequestBody GoogleAuthRequest request) {
         AuthResponse response = authService.googleLogin(request);
@@ -54,13 +65,20 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     @GetMapping("/me")
     public ResponseEntity<UserProfileDto> getCurrentUser() {
         return ResponseEntity.ok(userService.getProfile());
     }
 
     @PostMapping("/logout")
+<<<<<<< HEAD
     public ResponseEntity<Map<String, String>> logoutUser() {
         return ResponseEntity.ok(Map.of("message", "User logged out successfully"));
+=======
+    public ResponseEntity<?> logoutUser() {
+        return ResponseEntity.ok().body("{\"message\": \"User logged out successfully\"}");
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     }
 }

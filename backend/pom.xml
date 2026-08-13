@@ -50,12 +50,15 @@
         </dependency>
 
         <dependency>
+<<<<<<< HEAD
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
 
         <dependency>
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
@@ -94,6 +97,7 @@
                 <version>3.13.0</version>
             </plugin>
             <plugin>
+<<<<<<< HEAD
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
@@ -102,6 +106,8 @@
                 </configuration>
             </plugin>
             <plugin>
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>

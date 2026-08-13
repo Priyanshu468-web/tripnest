@@ -7,7 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+<<<<<<< HEAD
 import java.util.Map;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -26,6 +29,7 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getMyNotifications());
     }
 
+<<<<<<< HEAD
     @GetMapping("/unread-count")
     public ResponseEntity<Map<String, Long>> getUnreadCount() {
         return ResponseEntity.ok(notificationService.getUnreadCount());
@@ -41,5 +45,11 @@ public class NotificationController {
     public ResponseEntity<Map<String, String>> markAllAsRead() {
         notificationService.markAllAsRead();
         return ResponseEntity.ok(Map.of("message", "All notifications marked as read"));
+=======
+    @PutMapping("/{id}/read")
+    public ResponseEntity<?> markAsRead(@PathVariable Long id) {
+        notificationService.markAsRead(id);
+        return ResponseEntity.ok().body("{\"message\": \"Notification marked as read\"}");
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     }
 }

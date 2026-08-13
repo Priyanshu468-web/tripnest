@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 
 public class TripDto {
     private Long id;
+<<<<<<< HEAD
     private String title;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
     @NotBlank
     private String destination;
@@ -45,9 +48,14 @@ public class TripDto {
 
     public TripDto() {}
 
+<<<<<<< HEAD
     public TripDto(Long id, String title, String destination, LocalDate startDate, LocalDate endDate, Integer travelers, Double budget, String description, TripStatus status, Long ownerId, String ownerName, String ownerEmail, Double totalSpent, Double remainingBudget, Double budgetUtilization, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
+=======
+    public TripDto(Long id, String destination, LocalDate startDate, LocalDate endDate, Integer travelers, Double budget, String description, TripStatus status, Long ownerId, String ownerName, String ownerEmail, Double totalSpent, Double remainingBudget, Double budgetUtilization, LocalDateTime createdAt) {
+        this.id = id;
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         this.destination = destination;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -68,7 +76,10 @@ public class TripDto {
 
     public static class TripDtoBuilder {
         private Long id;
+<<<<<<< HEAD
         private String title;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         private String destination;
         private LocalDate startDate;
         private LocalDate endDate;
@@ -85,7 +96,10 @@ public class TripDto {
         private LocalDateTime createdAt;
 
         public TripDtoBuilder id(Long id) { this.id = id; return this; }
+<<<<<<< HEAD
         public TripDtoBuilder title(String title) { this.title = title; return this; }
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         public TripDtoBuilder destination(String destination) { this.destination = destination; return this; }
         public TripDtoBuilder startDate(LocalDate startDate) { this.startDate = startDate; return this; }
         public TripDtoBuilder endDate(LocalDate endDate) { this.endDate = endDate; return this; }
@@ -102,16 +116,23 @@ public class TripDto {
         public TripDtoBuilder createdAt(LocalDateTime createdAt) { this.createdAt = createdAt; return this; }
 
         public TripDto build() {
+<<<<<<< HEAD
             return new TripDto(id, title, destination, startDate, endDate, travelers, budget, description, status, ownerId, ownerName, ownerEmail, totalSpent, remainingBudget, budgetUtilization, createdAt);
+=======
+            return new TripDto(id, destination, startDate, endDate, travelers, budget, description, status, ownerId, ownerName, ownerEmail, totalSpent, remainingBudget, budgetUtilization, createdAt);
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         }
     }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
+<<<<<<< HEAD
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     public String getDestination() { return destination; }
     public void setDestination(String destination) { this.destination = destination; }
 

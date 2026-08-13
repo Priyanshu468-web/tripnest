@@ -1,11 +1,19 @@
 package com.tripnest.service;
 
 import com.tripnest.config.JwtUtils;
+<<<<<<< HEAD
 import com.tripnest.dto.*;
 import com.tripnest.entity.User;
 import com.tripnest.entity.enums.RoleName;
 import com.tripnest.exception.BadRequestException;
 import com.tripnest.exception.ResourceNotFoundException;
+=======
+import com.tripnest.dto.AuthRequest;
+import com.tripnest.dto.AuthResponse;
+import com.tripnest.dto.RegisterRequest;
+import com.tripnest.entity.User;
+import com.tripnest.entity.enums.RoleName;
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 import com.tripnest.repository.UserRepository;
 import com.tripnest.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +25,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 @Service
 public class AuthService {
 
@@ -29,9 +40,12 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
+<<<<<<< HEAD
     // Temporary storage for password reset tokens
     private final Map<String, String> resetTokens = new ConcurrentHashMap<>();
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     @Autowired
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.userRepository = userRepository;
@@ -43,7 +57,11 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
+<<<<<<< HEAD
             throw new BadRequestException("Email is already registered!");
+=======
+            throw new RuntimeException("Error: Email is already in use!");
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         }
 
         RoleName userRole = request.getRole() != null ? request.getRole() : RoleName.TRAVELER;
@@ -86,7 +104,11 @@ public class AuthService {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userRepository.findByEmail(userDetails.getEmail())
+<<<<<<< HEAD
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+=======
+                .orElseThrow(() -> new RuntimeException("User not found"));
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
         return AuthResponse.builder()
                 .token(jwt)
@@ -98,6 +120,7 @@ public class AuthService {
                 .build();
     }
 
+<<<<<<< HEAD
     @Transactional
     public AuthResponse googleLogin(GoogleAuthRequest request) {
         String email = request.getEmail();
@@ -167,10 +190,20 @@ public class AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             throw new BadRequestException("No authenticated user found");
+=======
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new RuntimeException("No authenticated user found");
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         }
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         return userRepository.findById(userDetails.getId())
+<<<<<<< HEAD
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userDetails.getId()));
+=======
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userDetails.getId()));
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     }
 }

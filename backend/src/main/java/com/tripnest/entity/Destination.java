@@ -31,11 +31,17 @@ public class Destination {
 
     private Double rating;
 
+<<<<<<< HEAD
     private Boolean popular;
 
     public Destination() {}
 
     public Destination(Long id, String name, String country, String description, String imageUrl, String attractions, String popularLocations, String bestTimeToVisit, Double rating, Boolean popular) {
+=======
+    public Destination() {}
+
+    public Destination(Long id, String name, String country, String description, String imageUrl, String attractions, String popularLocations, String bestTimeToVisit, Double rating) {
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         this.id = id;
         this.name = name;
         this.country = country;
@@ -45,6 +51,7 @@ public class Destination {
         this.popularLocations = popularLocations;
         this.bestTimeToVisit = bestTimeToVisit;
         this.rating = rating;
+<<<<<<< HEAD
         this.popular = popular;
     }
 
@@ -52,6 +59,8 @@ public class Destination {
     protected void onCreate() {
         if (popular == null) popular = true;
         if (rating == null) rating = 4.8;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     }
 
     public static DestinationBuilder builder() { return new DestinationBuilder(); }
@@ -66,7 +75,10 @@ public class Destination {
         private String popularLocations;
         private String bestTimeToVisit;
         private Double rating;
+<<<<<<< HEAD
         private Boolean popular;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
         public DestinationBuilder id(Long id) { this.id = id; return this; }
         public DestinationBuilder name(String name) { this.name = name; return this; }
@@ -77,10 +89,16 @@ public class Destination {
         public DestinationBuilder popularLocations(String popularLocations) { this.popularLocations = popularLocations; return this; }
         public DestinationBuilder bestTimeToVisit(String bestTimeToVisit) { this.bestTimeToVisit = bestTimeToVisit; return this; }
         public DestinationBuilder rating(Double rating) { this.rating = rating; return this; }
+<<<<<<< HEAD
         public DestinationBuilder popular(Boolean popular) { this.popular = popular; return this; }
 
         public Destination build() {
             return new Destination(id, name, country, description, imageUrl, attractions, popularLocations, bestTimeToVisit, rating, popular);
+=======
+
+        public Destination build() {
+            return new Destination(id, name, country, description, imageUrl, attractions, popularLocations, bestTimeToVisit, rating);
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         }
     }
 
@@ -110,7 +128,10 @@ public class Destination {
 
     public Double getRating() { return rating; }
     public void setRating(Double rating) { this.rating = rating; }
+<<<<<<< HEAD
 
     public Boolean getPopular() { return popular; }
     public void setPopular(Boolean popular) { this.popular = popular; }
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 }

@@ -14,8 +14,11 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+<<<<<<< HEAD
     private String title;
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     @Column(nullable = false)
     private String destination;
 
@@ -47,9 +50,14 @@ public class Trip {
 
     public Trip() {}
 
+<<<<<<< HEAD
     public Trip(Long id, String title, String destination, LocalDate startDate, LocalDate endDate, Integer travelers, Double budget, String description, TripStatus status, User owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.title = title;
+=======
+    public Trip(Long id, String destination, LocalDate startDate, LocalDate endDate, Integer travelers, Double budget, String description, TripStatus status, User owner, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         this.destination = destination;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -69,9 +77,12 @@ public class Trip {
         if (status == null) status = TripStatus.PLANNING;
         if (travelers == null) travelers = 1;
         if (budget == null) budget = 0.0;
+<<<<<<< HEAD
         if (title == null || title.trim().isEmpty()) {
             title = "Trip to " + destination;
         }
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     }
 
     @PreUpdate
@@ -83,7 +94,10 @@ public class Trip {
 
     public static class TripBuilder {
         private Long id;
+<<<<<<< HEAD
         private String title;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         private String destination;
         private LocalDate startDate;
         private LocalDate endDate;
@@ -96,7 +110,10 @@ public class Trip {
         private LocalDateTime updatedAt;
 
         public TripBuilder id(Long id) { this.id = id; return this; }
+<<<<<<< HEAD
         public TripBuilder title(String title) { this.title = title; return this; }
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         public TripBuilder destination(String destination) { this.destination = destination; return this; }
         public TripBuilder startDate(LocalDate startDate) { this.startDate = startDate; return this; }
         public TripBuilder endDate(LocalDate endDate) { this.endDate = endDate; return this; }
@@ -109,16 +126,23 @@ public class Trip {
         public TripBuilder updatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; return this; }
 
         public Trip build() {
+<<<<<<< HEAD
             return new Trip(id, title, destination, startDate, endDate, travelers, budget, description, status, owner, createdAt, updatedAt);
+=======
+            return new Trip(id, destination, startDate, endDate, travelers, budget, description, status, owner, createdAt, updatedAt);
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         }
     }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
+<<<<<<< HEAD
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     public String getDestination() { return destination; }
     public void setDestination(String destination) { this.destination = destination; }
 

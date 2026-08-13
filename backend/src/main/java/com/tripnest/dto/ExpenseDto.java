@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 public class ExpenseDto {
     private Long id;
     private Long tripId;
+<<<<<<< HEAD
     private String title;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
     @NotNull
     @Min(0)
@@ -29,10 +32,16 @@ public class ExpenseDto {
 
     public ExpenseDto() {}
 
+<<<<<<< HEAD
     public ExpenseDto(Long id, Long tripId, String title, Double amount, ExpenseCategory category, String description, LocalDate expenseDate, String paidBy, LocalDateTime createdAt) {
         this.id = id;
         this.tripId = tripId;
         this.title = title;
+=======
+    public ExpenseDto(Long id, Long tripId, Double amount, ExpenseCategory category, String description, LocalDate expenseDate, String paidBy, LocalDateTime createdAt) {
+        this.id = id;
+        this.tripId = tripId;
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         this.amount = amount;
         this.category = category;
         this.description = description;
@@ -46,7 +55,10 @@ public class ExpenseDto {
     public static class ExpenseDtoBuilder {
         private Long id;
         private Long tripId;
+<<<<<<< HEAD
         private String title;
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         private Double amount;
         private ExpenseCategory category;
         private String description;
@@ -56,7 +68,10 @@ public class ExpenseDto {
 
         public ExpenseDtoBuilder id(Long id) { this.id = id; return this; }
         public ExpenseDtoBuilder tripId(Long tripId) { this.tripId = tripId; return this; }
+<<<<<<< HEAD
         public ExpenseDtoBuilder title(String title) { this.title = title; return this; }
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         public ExpenseDtoBuilder amount(Double amount) { this.amount = amount; return this; }
         public ExpenseDtoBuilder category(ExpenseCategory category) { this.category = category; return this; }
         public ExpenseDtoBuilder description(String description) { this.description = description; return this; }
@@ -65,7 +80,11 @@ public class ExpenseDto {
         public ExpenseDtoBuilder createdAt(LocalDateTime createdAt) { this.createdAt = createdAt; return this; }
 
         public ExpenseDto build() {
+<<<<<<< HEAD
             return new ExpenseDto(id, tripId, title, amount, category, description, expenseDate, paidBy, createdAt);
+=======
+            return new ExpenseDto(id, tripId, amount, category, description, expenseDate, paidBy, createdAt);
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         }
     }
 
@@ -75,9 +94,12 @@ public class ExpenseDto {
     public Long getTripId() { return tripId; }
     public void setTripId(Long tripId) { this.tripId = tripId; }
 
+<<<<<<< HEAD
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     public Double getAmount() { return amount; }
     public void setAmount(Double amount) { this.amount = amount; }
 

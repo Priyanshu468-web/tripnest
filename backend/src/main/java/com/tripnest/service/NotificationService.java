@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< HEAD
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+=======
+import java.util.List;
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +35,7 @@ public class NotificationService {
                 .stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
+<<<<<<< HEAD
     public Map<String, Long> getUnreadCount() {
         User currentUser = authService.getCurrentUser();
         long count = notificationRepository.findByUserIdOrderByCreatedAtDesc(currentUser.getId())
@@ -51,6 +56,8 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     @Transactional
     public void markAsRead(Long id) {
         User currentUser = authService.getCurrentUser();
@@ -65,6 +72,7 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+<<<<<<< HEAD
     @Transactional
     public void markAllAsRead() {
         User currentUser = authService.getCurrentUser();
@@ -73,15 +81,23 @@ public class NotificationService {
         notificationRepository.saveAll(list);
     }
 
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     private NotificationDto mapToDto(Notification n) {
         return NotificationDto.builder()
                 .id(n.getId())
                 .userId(n.getUserId())
+<<<<<<< HEAD
                 .title(n.getTitle())
                 .message(n.getMessage())
                 .type(n.getType())
                 .isRead(n.getIsRead())
                 .linkUrl(n.getLinkUrl())
+=======
+                .message(n.getMessage())
+                .type(n.getType())
+                .isRead(n.getIsRead())
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 .createdAt(n.getCreatedAt())
                 .build();
     }

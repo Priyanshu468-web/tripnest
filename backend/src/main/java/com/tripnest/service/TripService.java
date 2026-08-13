@@ -171,7 +171,10 @@ public class TripService {
 
         return TripDto.builder()
                 .id(trip.getId())
+<<<<<<< HEAD
                 .title(trip.getTitle())
+=======
+>>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 .destination(trip.getDestination())
                 .startDate(trip.getStartDate())
                 .endDate(trip.getEndDate())
