@@ -1,27 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { destinationService } from '../services/destinationService';
-<<<<<<< HEAD
 import { MapPin, Star, Calendar, Sparkles, ArrowLeft, CheckCircle2, Compass, Sun, CloudRain, Thermometer, Map as MapIcon } from 'lucide-react';
 import API from '../services/api';
-=======
-import { MapPin, Star, Calendar, Sparkles, ArrowLeft, CheckCircle2, Compass } from 'lucide-react';
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
 export const DestinationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [destination, setDestination] = useState(null);
-<<<<<<< HEAD
   const [weather, setWeather] = useState(null);
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     destinationService.getDestinationById(id)
-<<<<<<< HEAD
       .then(async (data) => {
         setDestination(data);
         try {
@@ -30,10 +22,6 @@ export const DestinationDetails = () => {
         } catch (e) {
           // Weather fallback handled gracefully
         }
-=======
-      .then(data => {
-        setDestination(data);
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         setLoading(false);
       })
       .catch(err => {
@@ -45,11 +33,7 @@ export const DestinationDetails = () => {
   if (loading) {
     return (
       <div className="glass-card p-12 text-center text-slate-400 text-sm max-w-xl mx-auto my-12">
-<<<<<<< HEAD
         Loading destination details & live weather...
-=======
-        Loading destination details...
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
       </div>
     );
   }
@@ -99,7 +83,6 @@ export const DestinationDetails = () => {
         </div>
 
         <div className="p-8 space-y-8">
-<<<<<<< HEAD
           {/* Weather Widget */}
           {weather && (
             <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950/60 border border-indigo-500/30 flex items-center justify-between">
@@ -126,8 +109,6 @@ export const DestinationDetails = () => {
             </div>
           )}
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           <div>
             <h3 className="text-lg font-bold text-white mb-2">About {destination.name}</h3>
             <p className="text-slate-300 text-sm leading-relaxed">{destination.description}</p>
@@ -151,7 +132,6 @@ export const DestinationDetails = () => {
             </div>
           </div>
 
-<<<<<<< HEAD
           {/* Location Map View */}
           <div className="p-6 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-4">
             <h4 className="text-sm font-bold text-white flex items-center space-x-2">
@@ -171,8 +151,6 @@ export const DestinationDetails = () => {
             </div>
           </div>
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           {destination.popularLocations && (
             <div>
               <h3 className="text-base font-bold text-white mb-3">Popular Neighborhoods & Hotspots</h3>
@@ -190,11 +168,7 @@ export const DestinationDetails = () => {
           <div className="pt-4 border-t border-slate-800/80">
             <button
               onClick={() => navigate(`/trips/new?destination=${encodeURIComponent(destination.name)}`)}
-<<<<<<< HEAD
               className="bg-gradient-to-r from-indigo-600 to-teal-500 hover:from-indigo-500 hover:to-teal-400 text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-xl shadow-indigo-500/20 flex items-center space-x-2"
-=======
-              className="gradient-button text-white px-8 py-3.5 rounded-xl font-bold text-sm shadow-xl shadow-indigo-500/20 flex items-center space-x-2"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             >
               <Sparkles className="w-4 h-4" />
               <span>Create Trip to {destination.name}</span>

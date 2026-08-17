@@ -24,13 +24,10 @@ export const tripService = {
   deleteTrip: async (id) => {
     const response = await API.delete(`/trips/${id}`);
     return response.data;
-<<<<<<< HEAD
   },
 
   shareTrip: async (id) => {
     const response = await API.post(`/trips/${id}/share`);
     return response.data;
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   }
 };

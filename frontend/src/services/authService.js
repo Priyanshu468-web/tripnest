@@ -19,7 +19,6 @@ export const authService = {
     return response.data;
   },
 
-<<<<<<< HEAD
   googleLogin: async (credentialData) => {
     const response = await API.post('/auth/google', credentialData);
     if (response.data.token) {
@@ -39,8 +38,6 @@ export const authService = {
     return response.data;
   },
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   getCurrentUser: async () => {
     const response = await API.get('/auth/me');
     return response.data;

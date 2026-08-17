@@ -141,11 +141,7 @@ export const Register = () => {
                 >
                   <option value="TRAVELER">TRAVELER</option>
                   <option value="GROUP_ADMIN">GROUP ADMIN</option>
-<<<<<<< HEAD
                   <option value="ADMIN">ADMIN</option>
-=======
-                  <option value="ADMINISTRATOR">ADMINISTRATOR</option>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 </select>
               </div>
             </div>

@@ -4,19 +4,12 @@ import { tripService } from '../services/tripService';
 import { activityService } from '../services/activityService';
 import { expenseService } from '../services/expenseService';
 import { memberService } from '../services/memberService';
-<<<<<<< HEAD
 import { documentService } from '../services/documentService';
 import {
   MapPin, Calendar, Users, DollarSign, Plus, Trash2, Edit3, Clock,
   PieChart, UserPlus, Shield, CheckCircle, AlertCircle, ArrowLeft,
   Utensils, Navigation, Home as HomeIcon, Camera, Compass, ShoppingBag, Loader2,
   FileText, Download, Share2, Copy, Check
-=======
-import {
-  MapPin, Calendar, Users, DollarSign, Plus, Trash2, Edit3, Clock,
-  PieChart, UserPlus, Shield, CheckCircle, AlertCircle, ArrowLeft,
-  Utensils, Navigation, Home as HomeIcon, Camera, Compass, ShoppingBag, Loader2
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 } from 'lucide-react';
 import { Modal } from '../components/Modal';
 
@@ -28,14 +21,9 @@ export const TripDetails = () => {
   const [activities, setActivities] = useState([]);
   const [expenseSummary, setExpenseSummary] = useState(null);
   const [members, setMembers] = useState([]);
-<<<<<<< HEAD
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary' | 'expenses' | 'members' | 'documents'
-=======
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('itinerary'); // 'itinerary' | 'expenses' | 'members'
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
   // Modals state
   const [showActivityModal, setShowActivityModal] = useState(false);
@@ -64,7 +52,6 @@ export const TripDetails = () => {
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('MEMBER');
-<<<<<<< HEAD
 
   // Document modal
   const [showDocModal, setShowDocModal] = useState(false);
@@ -77,13 +64,10 @@ export const TripDetails = () => {
   const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   const [actionError, setActionError] = useState('');
 
   const loadData = useCallback(async () => {
     try {
-<<<<<<< HEAD
       const [tripData, activityList, summary, memberList, docList] = await Promise.all([
         tripService.getTripById(id),
         activityService.getActivitiesByTrip(id),
@@ -96,18 +80,6 @@ export const TripDetails = () => {
       setExpenseSummary(summary);
       setMembers(memberList || []);
       setDocuments(docList || []);
-=======
-      const [tripData, activityList, summary, memberList] = await Promise.all([
-        tripService.getTripById(id),
-        activityService.getActivitiesByTrip(id),
-        expenseService.getExpenseSummary(id),
-        memberService.getMembersByTrip(id)
-      ]);
-      setTrip(tripData);
-      setActivities(activityList);
-      setExpenseSummary(summary);
-      setMembers(memberList);
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     } catch (err) {
       console.error('Error loading trip details:', err);
     } finally {
@@ -251,7 +223,6 @@ export const TripDetails = () => {
     }
   };
 
-<<<<<<< HEAD
   // Document Upload Submit
   const handleDocSubmit = async (e) => {
     e.preventDefault();
@@ -305,8 +276,6 @@ export const TripDetails = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   // Group Activities by Day Number
   const groupedActivities = activities.reduce((acc, act) => {
     const dayKey = act.dayNumber || 1;
@@ -317,7 +286,6 @@ export const TripDetails = () => {
 
   const sortedDays = Object.keys(groupedActivities).map(Number).sort((a, b) => a - b);
 
-<<<<<<< HEAD
   // Calculate Expense Settlement
   const calculateSettlements = () => {
     if (!expenseSummary?.expenses || expenseSummary.expenses.length === 0) return [];
@@ -347,8 +315,6 @@ export const TripDetails = () => {
 
   const settlements = calculateSettlements();
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   const getActivityIcon = (type) => {
     switch (type) {
       case 'DINING': return <Utensils className="w-4 h-4 text-amber-400" />;
@@ -380,7 +346,6 @@ export const TripDetails = () => {
 
   return (
     <div className="space-y-8 pb-16">
-<<<<<<< HEAD
       {/* Back Button & Actions */}
       <div className="flex items-center justify-between">
         <button
@@ -399,16 +364,6 @@ export const TripDetails = () => {
           <span>Share Trip</span>
         </button>
       </div>
-=======
-      {/* Back Button */}
-      <button
-        onClick={() => navigate('/trips')}
-        className="inline-flex items-center space-x-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        <span>Back to My Trips</span>
-      </button>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
       {/* Trip Header Banner */}
       <div className="glass-card p-8 rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-indigo-950/40 to-slate-950 relative overflow-hidden">
@@ -426,22 +381,14 @@ export const TripDetails = () => {
 
             <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 flex items-center space-x-3">
               <MapPin className="w-8 h-8 text-indigo-400 shrink-0" />
-<<<<<<< HEAD
               <span>{trip.title || trip.destination}</span>
-=======
-              <span>{trip.destination}</span>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             </h1>
 
             <div className="flex items-center space-x-2 text-xs text-slate-300">
               <Calendar className="w-4 h-4 text-slate-400" />
               <span>{trip.startDate} to {trip.endDate}</span>
               <span className="text-slate-600">•</span>
-<<<<<<< HEAD
               <span>Destination: <strong className="text-teal-300">{trip.destination}</strong></span>
-=======
-              <span>Owner: <strong className="text-indigo-300">{trip.ownerName}</strong></span>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             </div>
 
             {trip.description && (
@@ -454,35 +401,21 @@ export const TripDetails = () => {
           {/* Quick Budget Badge Card */}
           <div className="glass-card p-5 rounded-2xl border border-indigo-500/20 bg-slate-900/90 text-right min-w-[240px]">
             <div className="text-xs text-slate-400 font-medium mb-1">Total Trip Budget</div>
-<<<<<<< HEAD
             <div className="text-2xl font-extrabold text-white mb-2">${(trip.budget || 0).toLocaleString()}</div>
             <div className="text-xs flex justify-end space-x-3">
               <span className="text-emerald-400">Spent: ${(expenseSummary?.totalExpenses || 0).toLocaleString()}</span>
-=======
-            <div className="text-2xl font-extrabold text-white mb-2">₹{(trip.budget || 0).toLocaleString()}</div>
-            <div className="text-xs flex justify-end space-x-3">
-              <span className="text-emerald-400">Spent: ₹{(expenseSummary?.totalExpenses || 0).toLocaleString()}</span>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
               <span className="text-indigo-400 font-bold">{(expenseSummary?.budgetUtilization || 0).toFixed(1)}% Used</span>
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
-<<<<<<< HEAD
         <div className="flex flex-wrap items-center gap-2 border-t border-slate-800/80 pt-6 mt-8">
-=======
-        <div className="flex items-center space-x-2 border-t border-slate-800/80 pt-6 mt-8">
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           <button
             onClick={() => setActiveTab('itinerary')}
             className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 ${
               activeTab === 'itinerary'
-<<<<<<< HEAD
                 ? 'bg-gradient-to-r from-indigo-600 to-teal-500 text-white shadow-lg shadow-indigo-500/20'
-=======
-                ? 'gradient-button text-white shadow-lg shadow-indigo-500/20'
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 : 'text-slate-400 hover:text-white hover:bg-slate-800'
             }`}
           >
@@ -494,38 +427,25 @@ export const TripDetails = () => {
             onClick={() => setActiveTab('expenses')}
             className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 ${
               activeTab === 'expenses'
-<<<<<<< HEAD
                 ? 'bg-gradient-to-r from-indigo-600 to-teal-500 text-white shadow-lg shadow-indigo-500/20'
-=======
-                ? 'gradient-button text-white shadow-lg shadow-indigo-500/20'
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 : 'text-slate-400 hover:text-white hover:bg-slate-800'
             }`}
           >
             <PieChart className="w-4 h-4" />
-<<<<<<< HEAD
             <span>Budget & Expenses</span>
-=======
-            <span>Budget & Expense Dashboard</span>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           </button>
 
           <button
             onClick={() => setActiveTab('members')}
             className={`px-5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 ${
               activeTab === 'members'
-<<<<<<< HEAD
                 ? 'bg-gradient-to-r from-indigo-600 to-teal-500 text-white shadow-lg shadow-indigo-500/20'
-=======
-                ? 'gradient-button text-white shadow-lg shadow-indigo-500/20'
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 : 'text-slate-400 hover:text-white hover:bg-slate-800'
             }`}
           >
             <Users className="w-4 h-4" />
             <span>Group Members ({members.length})</span>
           </button>
-<<<<<<< HEAD
 
           <button
             onClick={() => setActiveTab('documents')}
@@ -538,8 +458,6 @@ export const TripDetails = () => {
             <FileText className="w-4 h-4" />
             <span>Documents ({documents.length})</span>
           </button>
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         </div>
       </div>
 
@@ -554,11 +472,7 @@ export const TripDetails = () => {
                 setEditingActivity(null);
                 setShowActivityModal(true);
               }}
-<<<<<<< HEAD
               className="bg-gradient-to-r from-indigo-600 to-teal-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-500/20"
-=======
-              className="gradient-button text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-500/20"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             >
               <Plus className="w-4 h-4" />
               <span>Add Activity</span>
@@ -574,11 +488,7 @@ export const TripDetails = () => {
               </div>
               <button
                 onClick={() => setShowActivityModal(true)}
-<<<<<<< HEAD
                 className="bg-gradient-to-r from-indigo-600 to-teal-500 text-white px-5 py-2 rounded-xl text-xs font-bold inline-flex items-center space-x-1.5"
-=======
-                className="gradient-button text-white px-5 py-2 rounded-xl text-xs font-bold inline-flex items-center space-x-1.5"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
               >
                 <Plus className="w-4 h-4" />
                 <span>Add First Activity</span>
@@ -664,30 +574,18 @@ export const TripDetails = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="glass-card p-6 rounded-2xl border border-slate-800">
               <div className="text-xs font-semibold text-slate-400 mb-1">TOTAL BUDGET</div>
-<<<<<<< HEAD
               <div className="text-2xl font-extrabold text-white">${(expenseSummary?.totalBudget || 0).toLocaleString()}</div>
-=======
-              <div className="text-2xl font-extrabold text-white">₹{(expenseSummary?.totalBudget || 0).toLocaleString()}</div>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             </div>
 
             <div className="glass-card p-6 rounded-2xl border border-slate-800">
               <div className="text-xs font-semibold text-slate-400 mb-1">TOTAL SPENT</div>
-<<<<<<< HEAD
               <div className="text-2xl font-extrabold text-emerald-400">${(expenseSummary?.totalExpenses || 0).toLocaleString()}</div>
-=======
-              <div className="text-2xl font-extrabold text-emerald-400">₹{(expenseSummary?.totalExpenses || 0).toLocaleString()}</div>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             </div>
 
             <div className="glass-card p-6 rounded-2xl border border-slate-800">
               <div className="text-xs font-semibold text-slate-400 mb-1">REMAINING</div>
               <div className={`text-2xl font-extrabold ${(expenseSummary?.remainingBudget || 0) < 0 ? 'text-rose-400' : 'text-indigo-400'}`}>
-<<<<<<< HEAD
                 ${(expenseSummary?.remainingBudget || 0).toLocaleString()}
-=======
-                ₹{(expenseSummary?.remainingBudget || 0).toLocaleString()}
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
               </div>
             </div>
 
@@ -703,7 +601,6 @@ export const TripDetails = () => {
             </div>
           </div>
 
-<<<<<<< HEAD
           {/* Shared Expense Settlement Calculation */}
           <div className="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
             <h3 className="text-base font-bold text-white flex items-center gap-2">
@@ -736,22 +633,12 @@ export const TripDetails = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-1 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
               <h3 className="text-base font-bold text-white mb-2">Category Breakdown</h3>
-=======
-          {/* Category breakdown & Add Expense */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1 glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
-              <h3 className="text-base font-bold text-white mb-2">Category-Wise Breakdown</h3>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
               {expenseSummary?.categoryWiseExpenses &&
                 Object.entries(expenseSummary.categoryWiseExpenses).map(([category, amount]) => (
                   <div key={category} className="space-y-1">
                     <div className="flex justify-between text-xs">
                       <span className="text-slate-300 font-semibold">{category}</span>
-<<<<<<< HEAD
                       <span className="text-indigo-300 font-mono font-bold">${amount.toLocaleString()}</span>
-=======
-                      <span className="text-indigo-300 font-mono font-bold">₹{amount.toLocaleString()}</span>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                     </div>
                     <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
                       <div
@@ -774,11 +661,7 @@ export const TripDetails = () => {
                     setEditingExpense(null);
                     setShowExpenseModal(true);
                   }}
-<<<<<<< HEAD
                   className="bg-gradient-to-r from-indigo-600 to-teal-500 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-500/20"
-=======
-                  className="gradient-button text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-500/20"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Expense</span>
@@ -810,13 +693,8 @@ export const TripDetails = () => {
                             </span>
                           </td>
                           <td className="py-3.5 px-4 font-medium text-white">{exp.description || '-'}</td>
-<<<<<<< HEAD
                           <td className="py-3.5 px-4 text-slate-400">{exp.paidBy || 'Owner'}</td>
                           <td className="py-3.5 px-4 font-bold text-emerald-400 font-mono">${exp.amount.toLocaleString()}</td>
-=======
-                          <td className="py-3.5 px-4 text-slate-400">{exp.paidBy}</td>
-                          <td className="py-3.5 px-4 font-bold text-emerald-400 font-mono">₹{exp.amount.toLocaleString()}</td>
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                           <td className="py-3.5 px-4 text-right space-x-2">
                             <button
                               onClick={() => openEditExpense(exp)}
@@ -849,11 +727,7 @@ export const TripDetails = () => {
             <h2 className="text-xl font-bold text-white">Group Roster & Collaborators</h2>
             <button
               onClick={() => setShowInviteModal(true)}
-<<<<<<< HEAD
               className="bg-gradient-to-r from-indigo-600 to-teal-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-500/20"
-=======
-              className="gradient-button text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-indigo-500/20"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
             >
               <UserPlus className="w-4 h-4" />
               <span>Invite Member</span>
@@ -900,7 +774,6 @@ export const TripDetails = () => {
         </div>
       )}
 
-<<<<<<< HEAD
       {/* TAB 4: DOCUMENTS & FILE STORAGE */}
       {activeTab === 'documents' && (
         <div className="space-y-6">
@@ -973,8 +846,6 @@ export const TripDetails = () => {
         </div>
       )}
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
       {/* ACTIVITY MODAL */}
       <Modal
         isOpen={showActivityModal}
@@ -1081,11 +952,7 @@ export const TripDetails = () => {
 
           <button
             type="submit"
-<<<<<<< HEAD
             className="w-full bg-gradient-to-r from-indigo-600 to-teal-500 text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20"
-=======
-            className="w-full gradient-button text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           >
             {editingActivity ? "Save Activity Updates" : "Add Activity to Schedule"}
           </button>
@@ -1110,7 +977,6 @@ export const TripDetails = () => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-<<<<<<< HEAD
               <label className="block text-xs font-semibold text-slate-300 mb-1">Amount ($) *</label>
               <input
                 type="number"
@@ -1120,17 +986,6 @@ export const TripDetails = () => {
                 value={expenseForm.amount}
                 onChange={(e) => setExpenseForm({ ...expenseForm, amount: parseFloat(e.target.value) || 0 })}
                 placeholder="150"
-=======
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Amount (₹) *</label>
-              <input
-                type="number"
-                min={0}
-                step={10}
-                required
-                value={expenseForm.amount}
-                onChange={(e) => setExpenseForm({ ...expenseForm, amount: parseFloat(e.target.value) || 0 })}
-                placeholder="1500"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-sm text-white"
               />
             </div>
@@ -1188,11 +1043,7 @@ export const TripDetails = () => {
 
           <button
             type="submit"
-<<<<<<< HEAD
             className="w-full bg-gradient-to-r from-indigo-600 to-teal-500 text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20"
-=======
-            className="w-full gradient-button text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           >
             {editingExpense ? "Save Expense Updates" : "Log Expense Record"}
           </button>
@@ -1238,17 +1089,12 @@ export const TripDetails = () => {
 
           <button
             type="submit"
-<<<<<<< HEAD
             className="w-full bg-gradient-to-r from-indigo-600 to-teal-500 text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20"
-=======
-            className="w-full gradient-button text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-indigo-500/20"
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
           >
             Send Trip Invitation
           </button>
         </form>
       </Modal>
-<<<<<<< HEAD
 
       {/* DOCUMENT MODAL */}
       <Modal
@@ -1334,8 +1180,6 @@ export const TripDetails = () => {
           </div>
         </div>
       </Modal>
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
     </div>
   );
 };

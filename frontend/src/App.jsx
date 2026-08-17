@@ -8,11 +8,8 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
-<<<<<<< HEAD
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 import { Dashboard } from './pages/Dashboard';
 import { Profile } from './pages/Profile';
 import { MyTrips } from './pages/MyTrips';
@@ -22,11 +19,8 @@ import { EditTrip } from './pages/EditTrip';
 import { Destinations } from './pages/Destinations';
 import { DestinationDetails } from './pages/DestinationDetails';
 import { Invitations } from './pages/Invitations';
-<<<<<<< HEAD
 import AnalyticsDashboard from './pages/AnalyticsDashboard';
 import AdminDashboard from './pages/AdminDashboard';
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
 
 export function App() {
   return (
@@ -41,11 +35,8 @@ export function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-<<<<<<< HEAD
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
               <Route path="/destinations" element={<Destinations />} />
               <Route path="/destinations/:id" element={<DestinationDetails />} />
 
@@ -59,7 +50,6 @@ export function App() {
                 }
               />
               <Route
-<<<<<<< HEAD
                 path="/analytics"
                 element={
                   <ProtectedRoute>
@@ -76,8 +66,6 @@ export function App() {
                 }
               />
               <Route
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
                 path="/profile"
                 element={
                   <ProtectedRoute>

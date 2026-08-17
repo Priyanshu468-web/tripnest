@@ -41,7 +41,6 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
-<<<<<<< HEAD
   const googleLogin = async (credentialData) => {
     const data = await authService.googleLogin(credentialData);
     setToken(data.token);
@@ -57,8 +56,6 @@ export const AuthProvider = ({ children }) => {
     return await authService.resetPassword(resetData);
   };
 
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
   const logout = () => {
     authService.logout();
     setToken(null);
@@ -83,12 +80,9 @@ export const AuthProvider = ({ children }) => {
         loading,
         login,
         register,
-<<<<<<< HEAD
         googleLogin,
         forgotPassword,
         resetPassword,
-=======
->>>>>>> 5a903c8e3c6b95ec1bfdcf58f147b9e0cd0a337e
         logout,
         updateProfileState,
       }}
